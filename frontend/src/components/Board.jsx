@@ -1,10 +1,16 @@
 import React, { useState } from "react";
+import { Scoreboard } from "./Scoreboard";
 import { Square } from "./Square";
 
-export const Board = () => {
+export const Board = (props) => {
   function getRandomInt(max) {
     return Math.floor(Math.random() * max);
   }
+
+  const [score, setScore] = useState({
+    player1: 0,
+    player2: 0,
+  });
 
   const [value, setValue] = useState({
     count: 0,
@@ -61,19 +67,31 @@ export const Board = () => {
     setTurn(!turn);
   };
 
+  const handleWinner = () => {
+    const copyScore = score;
+    if (isDraw) {
+      setValue({ count: 0, arr: Array(9).fill(null) });
+      return;
+    }
+    if (isWinner) {
+      if (isWinner === "O") {
+        copyScore.player1 = copyScore.player1 + 1;
+      } else {
+        copyScore.player2 = copyScore.player2 + 1;
+      }
+    }
+
+    setScore(copyScore);
+    setValue({ count: 0, arr: Array(9).fill(null) });
+  };
+
   return (
     <div className="board-container">
       {isWinner || isDraw ? (
         <>
           <h4>{isDraw ? "Draw ho gaya" : `${isWinner} jeet gaya`}</h4>
           <div className="grid">
-            <button
-              onClick={() => {
-                setValue({ count: 0, arr: Array(9).fill(null) });
-              }}
-            >
-              Play Again
-            </button>
+            <button onClick={handleWinner}>Play Again</button>
           </div>
         </>
       ) : (
@@ -134,6 +152,7 @@ export const Board = () => {
           </div>
         </>
       )}
+      <Scoreboard score={score} setScore={setScore} />
     </div>
   );
 };
