@@ -2,8 +2,15 @@ import React, { useState } from "react";
 import { Square } from "./Square";
 
 export const Board = () => {
-  const [value, setValue] = useState(Array(9).fill(null));
-  const [turn, setTurn] = useState(true);
+  function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
+
+  const [value, setValue] = useState({
+    count: 0,
+    arr: Array(9).fill(null),
+  });
+  const [turn, setTurn] = useState(getRandomInt(2) === 0 ? 0 : 1);
 
   const checkWinner = () => {
     const winnerLogic = [
@@ -19,55 +26,111 @@ export const Board = () => {
 
     for (let logic of winnerLogic) {
       const [a, b, c] = logic;
-      if (value[a] !== null && value[a] === value[b] && value[a] === value[c]) {
-        return value[a];
+      if (
+        value.arr[a] !== null &&
+        value.arr[a] === value.arr[b] &&
+        value.arr[a] === value.arr[c]
+      ) {
+        return value.arr[a];
       }
     }
 
     return false;
   };
 
-  const isWinner = checkWinner();
+  const checkDraw = () => {
+    if (value.count === 9) {
+      return true;
+    }
+    return false;
+  };
 
+  const isWinner = checkWinner();
+  const isDraw = checkDraw();
   const handleClick = (index) => {
-    if (value[index] !== null) {
+    if (value.arr[index] !== null) {
       return;
     }
-    const copyValue = [...value];
+    const copyValue = [...value.arr];
     copyValue[index] = turn ? "O" : "X";
-    setValue(copyValue);
+    setValue({
+      count: value.count + 1,
+      arr: copyValue,
+    });
+
     setTurn(!turn);
   };
+
   return (
     <div className="board-container">
-      {isWinner ? (
+      {isWinner || isDraw ? (
         <>
-          <h1> {isWinner} jeet gaya </h1>
-          <button
-            onClick={() => {
-              setValue(Array(9).fill(null));
-            }}
-          >
-            Play Again
-          </button>
+          <h4>{isDraw ? "Draw ho gaya" : `${isWinner} jeet gaya`}</h4>
+          <div className="grid">
+            <button
+              onClick={() => {
+                setValue({ count: 0, arr: Array(9).fill(null) });
+              }}
+            >
+              Play Again
+            </button>
+          </div>
         </>
       ) : (
         <>
           <h4>Player {turn ? "O" : "X"} please move</h4>
-          <div className="board-row">
-            <Square value={value[0]} onClick={() => handleClick(0)} />
-            <Square value={value[1]} onClick={() => handleClick(1)} />
-            <Square value={value[2]} onClick={() => handleClick(2)} />
-          </div>
-          <div className="board-row">
-            <Square value={value[3]} onClick={() => handleClick(3)} />
-            <Square value={value[4]} onClick={() => handleClick(4)} />
-            <Square value={value[5]} onClick={() => handleClick(5)} />
-          </div>
-          <div className="board-row">
-            <Square value={value[6]} onClick={() => handleClick(6)} />
-            <Square value={value[7]} onClick={() => handleClick(7)} />
-            <Square value={value[8]} onClick={() => handleClick(8)} />
+          <div className="grid">
+            <div className="board-row">
+              <Square
+                id="box0"
+                value={value.arr[0]}
+                onClick={() => handleClick(0)}
+              />
+              <Square
+                id="box1"
+                value={value.arr[1]}
+                onClick={() => handleClick(1)}
+              />
+              <Square
+                id="box2"
+                value={value.arr[2]}
+                onClick={() => handleClick(2)}
+              />
+            </div>
+            <div className="board-row">
+              <Square
+                id="box3"
+                value={value.arr[3]}
+                onClick={() => handleClick(3)}
+              />
+              <Square
+                id="box4"
+                value={value.arr[4]}
+                onClick={() => handleClick(4)}
+              />
+              <Square
+                id="box5"
+                value={value.arr[5]}
+                onClick={() => handleClick(5)}
+              />
+            </div>
+            <div className="board-row">
+              <Square
+                id="box6"
+                value={value.arr[6]}
+                onClick={() => handleClick(6)}
+              />
+              <Square
+                id="box7"
+                value={value.arr[7]}
+                onClick={() => handleClick(7)}
+              />
+              <Square
+                id="box8"
+                value={value.arr[8]}
+                onClick={() => handleClick(8)}
+              />
+            </div>
           </div>
         </>
       )}

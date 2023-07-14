@@ -1,13 +1,61 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --orange: #f2c14e;
+  --winning-blocks: #2d414b;
+}
+
+body {
+  color: var(--orange);
+  font-family: "Finger Paint", cursive;
+  background-color: #37505c;
+}
+
+h1 {
+  font-size: 54px;
+  text-transform: uppercase;
+}
+
+/* Header */
+
+.header {
+  width: 50%;
+  margin: auto;
+}
+.header h1 {
+  margin-left: 25%;
+}
+
+/* Board */
+
 .board-container {
   width: 40%;
   justify-content: center;
   align-items: center;
-  margin: 200px auto;
+  margin: 100px auto;
+  background-color: #37505c;
+}
+
+.board-container h4 {
+  font-size: 50px;
+  margin-bottom: 60px;
+}
+
+.grid {
+  margin: auto;
+  width: 45%;
+}
+
+.grid button {
+  margin-left: 25%;
 }
 
 .board-row {
   display: flex;
-  /* justify-content: space-evenly; */
   align-items: center;
 }
 
@@ -18,4 +66,40 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+#box0,
+#box1,
+#box2 {
+  border-top: none;
+}
+#box2,
+#box5,
+#box8 {
+  border-right: none;
+}
+#box6,
+#box7,
+#box8 {
+  border-bottom: none;
+}
+#box0,
+#box3,
+#box6 {
+  border-left: none;
+}
+
+button {
+  padding: 10px 20px;
+  border-radius: 10px;
+  background-color: var(--orange);
+  color: #333;
+  border-color: var(--orange);
+  font-size: 18px;
+  transition: 200ms transform;
+  font-weight: 600;
+}
+button:hover {
+  cursor: pointer;
+  transform: translateY(-2px);
 }
